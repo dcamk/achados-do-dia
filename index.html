@@ -4,94 +4,131 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Achados do Dia · Ofertas</title>
-<meta name="description" content="Ofertas selecionadas todos os dias, com desconto real conferido no histórico de preço. AliExpress, Shopee e Mercado Livre.">
-<meta name="theme-color" content="#050505">
+<meta name="description" content="Ofertas com desconto real de AliExpress, Shopee e Mercado Livre, selecionadas todos os dias: casa, tecnologia, moda, beleza, games e mais.">
+<meta name="theme-color" content="#07060d">
 <meta property="og:title" content="Achados do Dia · Ofertas">
 <meta property="og:description" content="Ofertas com desconto real, selecionadas todos os dias.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #050505; --tinta: #f2f2ef; --tinta-2: #b9b9b3; --tinta-3: #85857f;
-    --vidro: rgba(255,255,255,.055); --borda: rgba(255,255,255,.13); --borda-luz: rgba(255,255,255,.32);
+    --bg: #07060d; --tinta: #f5f3ff; --tinta-2: #c4c0d8; --tinta-3: #8b86a3;
+    --rosa: #ff2d95; --ciano: #22e4ff; --lima: #b6ff3b; --laranja: #ff7a1a; --amarelo: #ffe600;
+    --cartao: rgba(255,255,255,.04); --borda: rgba(255,255,255,.1);
     --sans: "Space Grotesk", ui-sans-serif, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
+  html { scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--tinta); font: 17px/1.6 var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
   a { color: inherit; }
 
-  .fundo { position: fixed; inset: -10%; z-index: -1; overflow: hidden; }
-  .fundo i { position: absolute; border-radius: 50%; filter: blur(60px);
-    background: radial-gradient(circle at 35% 35%, #fff 0%, #9a9a9a 35%, transparent 70%);
-    animation: deriva 60s ease-in-out infinite alternate; }
-  .fundo i:nth-child(1) { width: 50vmax; height: 50vmax; left: -10%; top: -18%; opacity: .3; }
-  .fundo i:nth-child(2) { width: 36vmax; height: 36vmax; right: -8%; top: 30%; opacity: .18; animation-duration: 80s; animation-direction: alternate-reverse; }
-  .fundo i:nth-child(3) { width: 16vmax; height: 16vmax; left: 55%; top: 6%; opacity: .24; filter: blur(30px); animation-duration: 50s; }
-  @keyframes deriva { to { transform: translate3d(6vw, 5vh, 0) scale(1.12); } }
+  /* fundo: grade em perspectiva + brilhos */
+  .fundo { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .fundo::before { content: ""; position: absolute; left: -50%; right: -50%; bottom: -10%; height: 60%;
+    background-image: linear-gradient(rgba(255,45,149,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(34,228,255,.14) 1px, transparent 1px);
+    background-size: 56px 56px; transform: perspective(420px) rotateX(62deg); transform-origin: bottom;
+    mask-image: linear-gradient(to top, #000 10%, transparent 85%); -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 85%);
+    animation: grade 18s linear infinite; }
+  .fundo i { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .45; }
+  .fundo i:nth-child(1) { width: 520px; height: 520px; background: var(--rosa); left: -180px; top: -160px; opacity: .35; }
+  .fundo i:nth-child(2) { width: 460px; height: 460px; background: var(--ciano); right: -160px; top: 20%; opacity: .25; }
+  .fundo i:nth-child(3) { width: 380px; height: 380px; background: var(--laranja); left: 35%; bottom: -200px; opacity: .25; }
+  @keyframes grade { to { background-position: 0 56px, 0 0; } }
 
-  .vidro { position: relative; background: var(--vidro); border: 1px solid var(--borda); border-radius: 20px;
-    -webkit-backdrop-filter: blur(22px) saturate(140%); backdrop-filter: blur(22px) saturate(140%);
-    box-shadow: 0 10px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.14), inset 0 -1px 0 rgba(0,0,0,.3); }
-  .vidro::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
-    background: linear-gradient(135deg, var(--borda-luz), transparent 35%, transparent 70%, rgba(255,255,255,.12));
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .vidro { background: rgba(22,22,22,.92); } }
-  @media (prefers-reduced-transparency: reduce) { .vidro { background: #141414; backdrop-filter: none; -webkit-backdrop-filter: none; } }
+  .envolve { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; }
+  .marca { display: flex; align-items: center; gap: 10px; font-weight: 700; text-decoration: none; letter-spacing: -.01em; }
+  .logo { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; font: 700 18px/1 var(--mono); color: var(--bg);
+    background: linear-gradient(135deg, var(--rosa), var(--laranja)); box-shadow: 0 0 18px rgba(255,45,149,.6); }
+  nav a { color: var(--tinta-2); text-decoration: none; font-weight: 500; margin-left: 22px; font-size: 15px; }
+  nav a:hover { color: var(--tinta); }
 
-  .envolve { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
-  header { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
-  .marca { display: flex; align-items: center; gap: 10px; font-weight: 600; text-decoration: none; }
-  .logo { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; background: var(--tinta); color: var(--bg); font: 700 18px/1 var(--mono); }
+  /* hero */
+  .hero { padding: 64px 0 40px; text-align: center; }
+  .selo { display: inline-flex; gap: 8px; align-items: center; font: 600 13px var(--mono); color: var(--lima); text-transform: uppercase; letter-spacing: .08em;
+    border: 1px solid rgba(182,255,59,.45); padding: 7px 14px; border-radius: 99px; box-shadow: 0 0 16px rgba(182,255,59,.25), inset 0 0 12px rgba(182,255,59,.12); }
+  .selo::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--lima); box-shadow: 0 0 10px var(--lima); animation: pisca 2.4s ease-in-out infinite; }
+  @keyframes pisca { 50% { opacity: .35; } }
+  h1 { font-size: clamp(44px, 9vw, 104px); line-height: .95; letter-spacing: -.05em; margin: 26px auto 22px; font-weight: 700; max-width: 960px; }
+  h1 .neon { background: linear-gradient(90deg, var(--rosa), var(--laranja) 45%, var(--amarelo)); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 22px rgba(255,45,149,.45)); }
+  .lead { font-size: clamp(18px, 2.3vw, 22px); color: var(--tinta-2); max-width: 640px; margin: 0 auto 34px; }
+  .botoes { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 26px; border-radius: 14px; font-weight: 700; font-size: 16px; text-decoration: none;
+    border: 1px solid var(--borda); background: rgba(255,255,255,.05); transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s, background .35s; }
+  .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,.09); }
+  .btn.primario { border: 0; color: #fff; background: linear-gradient(135deg, var(--rosa), var(--laranja));
+    box-shadow: 0 0 0 1px rgba(255,255,255,.15) inset, 0 10px 34px rgba(255,45,149,.45); }
+  .btn.primario:hover { box-shadow: 0 0 0 1px rgba(255,255,255,.25) inset, 0 14px 44px rgba(255,45,149,.65); }
+  .btn small { font: 600 11px var(--mono); text-transform: uppercase; letter-spacing: .06em; background: rgba(0,0,0,.25); padding: 3px 7px; border-radius: 6px; }
 
-  .hero { padding: 72px 0 56px; }
-  .selo { display: inline-flex; gap: 8px; align-items: center; font: 500 13px var(--mono); color: var(--tinta-2);
-    border: 1px solid var(--borda); padding: 6px 12px; border-radius: 99px; }
-  .selo::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--tinta); }
-  h1 { font-size: clamp(42px, 8vw, 84px); line-height: 1; letter-spacing: -.045em; margin: 22px 0 18px; font-weight: 600; }
-  h1 span { color: var(--tinta-3); }
-  .lead { font-size: clamp(18px, 2.4vw, 22px); color: var(--tinta-2); max-width: 600px; margin: 0 0 32px; }
-  .botoes { display: flex; gap: 12px; flex-wrap: wrap; }
-  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 14px; font-weight: 600; text-decoration: none;
-    border: 1px solid var(--borda); background: rgba(255,255,255,.06); transition: background .3s, transform .3s cubic-bezier(.16,1,.3,1); }
-  .btn:hover { background: rgba(255,255,255,.12); transform: translateY(-2px); }
-  .btn.primario { background: var(--tinta); color: var(--bg); border-color: var(--tinta); }
-  .btn[aria-disabled="true"] { cursor: default; }
-  .btn small { font: 500 12px var(--mono); opacity: .65; }
+  /* lojas */
+  .lojas { margin: 56px 0 8px; text-align: center; }
+  .lojas p { font: 600 12px var(--mono); color: var(--tinta-3); text-transform: uppercase; letter-spacing: .14em; margin: 0 0 18px; }
+  .lojas ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .lojas li { display: flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 14px; background: #fff; font-weight: 700; font-size: 17px; color: #222;
+    box-shadow: 0 0 24px var(--brilho, rgba(255,255,255,.15)); }
+  .lojas li img { height: 26px; width: auto; display: block; }
+  .lojas li.ali img { height: 22px; }
+  .lojas li.shopee { --brilho: rgba(238,77,45,.5); color: #ee4d2d; }
+  .lojas li.ali { --brilho: rgba(255,71,71,.5); }
+  .lojas li.ml { --brilho: rgba(255,230,0,.45); background: var(--amarelo); color: #2d3277; }
+  .ml-selo { width: 26px; height: 26px; border-radius: 50%; background: #2d3277; color: var(--amarelo); display: grid; place-items: center; font-size: 11px; font-weight: 700; }
 
-  h2 { font-size: 28px; letter-spacing: -.02em; margin: 0 0 20px; font-weight: 600; }
-  section { padding: 40px 0; }
-  .passos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .passo { padding: 24px; }
-  .passo b { display: block; font: 500 13px var(--mono); color: var(--tinta-3); margin-bottom: 12px; }
-  .passo h3 { margin: 0 0 8px; font-size: 19px; font-weight: 600; letter-spacing: -.01em; }
+  /* faixa de nichos */
+  .faixa { margin: 48px 0 0; overflow: hidden; border-block: 1px solid var(--borda); background: rgba(255,255,255,.02); padding: 16px 0;
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+  .faixa-trilho { display: flex; gap: 14px; width: max-content; animation: corre 50s linear infinite; }
+  .faixa span { white-space: nowrap; padding: 8px 16px; border-radius: 99px; border: 1px solid var(--cor); color: var(--tinta); font-weight: 600; font-size: 15px;
+    box-shadow: 0 0 14px color-mix(in srgb, var(--cor) 40%, transparent), inset 0 0 10px color-mix(in srgb, var(--cor) 18%, transparent); }
+  @keyframes corre { to { transform: translateX(-50%); } }
+
+  h2 { font-size: clamp(28px, 4vw, 40px); letter-spacing: -.03em; margin: 0 0 24px; font-weight: 700; }
+  section { padding: 64px 0 24px; }
+  .passos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .passo { padding: 26px; border-radius: 20px; background: var(--cartao); border: 1px solid var(--borda); position: relative; overflow: hidden; }
+  .passo::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: var(--cor); box-shadow: 0 0 18px var(--cor); }
+  .passo b { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; font: 600 15px var(--mono); color: var(--cor);
+    border: 1px solid var(--cor); box-shadow: 0 0 14px color-mix(in srgb, var(--cor) 45%, transparent); margin-bottom: 16px; }
+  .passo h3 { margin: 0 0 8px; font-size: 21px; letter-spacing: -.01em; }
   .passo p { margin: 0; color: var(--tinta-2); font-size: 15px; }
 
-  .ofertas { padding: 28px; display: grid; gap: 16px; }
-  .ofertas .vazio { color: var(--tinta-2); margin: 0; }
-  .grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
-  .oferta { border: 1px solid var(--borda); border-radius: 14px; padding: 12px; text-decoration: none; display: flex; flex-direction: column; gap: 8px; background: rgba(0,0,0,.25); }
-  .oferta img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 10px; background: #111; }
-  .oferta .t { font-size: 14px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .oferta .p { font: 500 18px var(--mono); }
-  .oferta .p s { color: var(--tinta-3); font-size: 13px; margin-right: 6px; }
+  .ofertas { border-radius: 22px; background: var(--cartao); border: 1px solid var(--borda); padding: 28px; }
+  .ofertas .vazio { margin: 0; color: var(--tinta-2); display: flex; align-items: center; gap: 12px; }
+  .ofertas .vazio::before { content: "⏳"; font-size: 22px; }
+  .grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+  .oferta { position: relative; border-radius: 18px; padding: 12px; text-decoration: none; display: flex; flex-direction: column; gap: 8px;
+    background: rgba(0,0,0,.35); border: 1px solid var(--borda); transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s, border-color .35s; }
+  .oferta:hover { transform: translateY(-4px); border-color: rgba(255,45,149,.6); box-shadow: 0 0 28px rgba(255,45,149,.3); }
+  .oferta img.foto { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 12px; background: #fff; }
+  .oferta .pct { position: absolute; top: 20px; left: 20px; font: 700 14px var(--mono); color: #fff; background: var(--rosa); padding: 4px 9px; border-radius: 8px; box-shadow: 0 0 16px var(--rosa); }
+  .oferta .t { font-size: 14px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--tinta-2); }
+  .oferta .p { font: 700 22px var(--mono); color: var(--lima); text-shadow: 0 0 14px rgba(182,255,59,.4); }
+  .oferta .p s { color: var(--tinta-3); font-size: 13px; font-weight: 500; margin-right: 8px; text-shadow: none; }
 
-  footer { padding: 40px 0 56px; color: var(--tinta-3); font-size: 14px; border-top: 1px solid rgba(255,255,255,.08); margin-top: 24px; }
-  footer p { margin: 0 0 8px; max-width: 720px; }
+  footer { padding: 48px 0 56px; color: var(--tinta-3); font-size: 14px; border-top: 1px solid var(--borda); margin-top: 48px; }
+  footer p { margin: 0 0 10px; max-width: 760px; }
 
   @media (prefers-reduced-motion: no-preference) {
-    .sobe { animation: sobe .9s cubic-bezier(.16,1,.3,1) both; }
-    .sobe:nth-child(2) { animation-delay: .08s; } .sobe:nth-child(3) { animation-delay: .16s; } .sobe:nth-child(4) { animation-delay: .24s; }
+    .sobe { animation: sobe 1s cubic-bezier(.16,1,.3,1) both; }
+    .sobe:nth-child(2) { animation-delay: .1s; } .sobe:nth-child(3) { animation-delay: .2s; } .sobe:nth-child(4) { animation-delay: .3s; }
   }
-  @keyframes sobe { from { opacity: 0; transform: translateY(14px); } }
-  @media (prefers-reduced-motion: reduce) { .fundo i { animation: none; } }
+  @keyframes sobe { from { opacity: 0; transform: translateY(16px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .fundo::before, .faixa-trilho, .selo::before { animation: none; }
+    html { scroll-behavior: auto; }
+  }
   @media (max-width: 760px) {
     .envolve { padding: 0 16px; }
-    .hero { padding: 40px 0 32px; }
+    nav { display: none; }
+    .hero { padding: 36px 0 24px; }
+    .btn { width: 100%; }
     .passos { grid-template-columns: 1fr; }
-    .btn { width: 100%; justify-content: center; }
-    .ofertas { padding: 20px; }
+    .ofertas { padding: 18px; }
+    .grade { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .lojas li { padding: 10px 14px; font-size: 15px; }
   }
 </style>
 </head>
@@ -101,44 +138,67 @@
 <div class="envolve">
   <header>
     <a class="marca" href="./"><span class="logo">%</span>Achados do Dia</a>
+    <nav><a href="#como">Como funciona</a><a href="#ofertas">Ofertas de hoje</a></nav>
   </header>
 
   <main>
     <div class="hero">
-      <span class="selo sobe">Ofertas selecionadas todos os dias</span>
-      <h1 class="sobe">Só desconto<br><span>de verdade.</span></h1>
-      <p class="lead sobe">A gente acompanha o preço dos produtos e só divulga quando o desconto é real. Nada de "promoção" com preço inflado.</p>
+      <span class="selo sobe">Ofertas novas todos os dias</span>
+      <h1 class="sobe">Desconto de verdade,<br><span class="neon">em tudo que você procura.</span></h1>
+      <p class="lead sobe">Casa, tecnologia, moda, beleza, games e muito mais. A gente confere o preço antes de avisar, então só chega o que vale a pena.</p>
       <div class="botoes sobe">
         <a class="btn primario" id="entrar" href="#" aria-disabled="true">Entrar no grupo <small>em breve</small></a>
         <a class="btn" href="#ofertas">Ver ofertas de hoje</a>
       </div>
     </div>
 
-    <section>
-      <h2>Como funciona</h2>
-      <div class="passos">
-        <div class="passo vidro"><b>01</b><h3>Procuramos</h3><p>Ofertas de AliExpress, Shopee e Mercado Livre, várias vezes por dia.</p></div>
-        <div class="passo vidro"><b>02</b><h3>Conferimos</h3><p>Comparamos com o preço normal do produto e checamos avaliação e vendas.</p></div>
-        <div class="passo vidro"><b>03</b><h3>Avisamos</h3><p>Só o que vale a pena vai para o grupo, poucas vezes por dia.</p></div>
-      </div>
-    </section>
-
-    <section id="ofertas">
-      <h2>Ofertas de hoje</h2>
-      <div class="ofertas vidro" id="lista">
-        <p class="vazio">As primeiras ofertas aparecem aqui em breve.</p>
-      </div>
-    </section>
+    <div class="lojas">
+      <p>Ofertas das lojas</p>
+      <ul>
+        <li class="shopee"><img src="marcas/shopee.svg" alt="">Shopee</li>
+        <li class="ali"><img src="marcas/aliexpress.svg" alt="AliExpress"></li>
+        <li class="ml"><span class="ml-selo" aria-hidden="true">ML</span>Mercado Livre</li>
+      </ul>
+    </div>
   </main>
+</div>
+
+<div class="faixa" aria-label="Categorias">
+  <div class="faixa-trilho" id="faixa"></div>
+</div>
+
+<div class="envolve">
+  <section id="como">
+    <h2>Como funciona</h2>
+    <div class="passos">
+      <div class="passo" style="--cor: var(--rosa)"><b>01</b><h3>A gente procura</h3><p>Ofertas de Shopee, AliExpress e Mercado Livre, várias vezes por dia.</p></div>
+      <div class="passo" style="--cor: var(--ciano)"><b>02</b><h3>Confere o preço</h3><p>Comparamos com o preço normal do produto. Promoção com preço inflado fica de fora.</p></div>
+      <div class="passo" style="--cor: var(--lima)"><b>03</b><h3>Você recebe</h3><p>Só o que vale a pena vai para o grupo, poucas vezes por dia, sem spam.</p></div>
+    </div>
+  </section>
+
+  <section id="ofertas">
+    <h2>Ofertas de hoje</h2>
+    <div class="ofertas" id="lista">
+      <p class="vazio">As primeiras ofertas aparecem aqui em breve.</p>
+    </div>
+  </section>
 
   <footer>
-    <p><b>Publicidade.</b> Participamos de programas de afiliados (AliExpress, Shopee e Mercado Livre). Quando você compra por um link daqui, podemos receber uma comissão, sem nenhum custo extra para você.</p>
+    <p><b>Publicidade.</b> Participamos dos programas de afiliados da Shopee, do AliExpress e do Mercado Livre. Quando você compra por um link daqui, podemos receber uma comissão, sem nenhum custo extra para você.</p>
     <p>Preços e estoque mudam a qualquer momento e são definidos pelas lojas. Confira sempre na página do produto antes de comprar.</p>
+    <p>Shopee, AliExpress e Mercado Livre são marcas de seus respectivos donos. Este site não é um canal oficial dessas lojas.</p>
   </footer>
 </div>
 
 <script>
-  // ofertas.json é publicado pelo coletor; enquanto não existir, fica a mensagem "em breve"
+  // faixa de categorias (repetida para o loop ficar contínuo)
+  const nichos = [["🏠 Casa", "--rosa"], ["💻 Tecnologia", "--ciano"], ["👗 Moda", "--lima"], ["💄 Beleza", "--laranja"], ["🎮 Games", "--rosa"],
+    ["🐶 Pet", "--ciano"], ["🧸 Infantil", "--lima"], ["🏋️ Esporte", "--laranja"], ["🍳 Cozinha", "--rosa"], ["🔧 Ferramentas", "--ciano"], ["🚗 Automotivo", "--lima"], ["📚 Papelaria", "--laranja"]];
+  const html = nichos.map(([n, c]) => `<span style="--cor: var(${c})">${n}</span>`).join("");
+  document.getElementById("faixa").innerHTML = html + html;
+
+  // ofertas.json só existe se for publicado de propósito; sem ele fica a mensagem "em breve"
   fetch("ofertas.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((d) => {
     if (d && d.grupo) {
       const b = document.getElementById("entrar");
@@ -149,9 +209,10 @@
     const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     document.getElementById("lista").innerHTML = `<div class="grade">${d.ofertas.map((o) => `
       <a class="oferta" href="${esc(o.link)}" rel="sponsored noopener" target="_blank">
-        <img src="${esc(o.imagem)}" alt="" loading="lazy">
+        <img class="foto" src="${esc(o.imagem)}" alt="" loading="lazy">
+        ${o.preco_original > o.preco ? `<span class="pct">-${Math.round((1 - o.preco / o.preco_original) * 100)}%</span>` : ""}
         <span class="t">${esc(o.titulo)}</span>
-        <span class="p">${o.preco_original ? `<s>${brl(o.preco_original)}</s>` : ""}${brl(o.preco)}</span>
+        <span class="p">${o.preco_original > o.preco ? `<s>${brl(o.preco_original)}</s>` : ""}${brl(o.preco)}</span>
       </a>`).join("")}</div>`;
   }).catch(() => {});
   document.getElementById("entrar").addEventListener("click", (e) => {
