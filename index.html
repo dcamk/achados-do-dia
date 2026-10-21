@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Achados do Dia · Ofertas</title>
+<meta name="description" content="Ofertas selecionadas todos os dias, com desconto real conferido no histórico de preço. AliExpress, Shopee e Mercado Livre.">
+<meta name="theme-color" content="#050505">
+<meta property="og:title" content="Achados do Dia · Ofertas">
+<meta property="og:description" content="Ofertas com desconto real, selecionadas todos os dias.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050505; --tinta: #f2f2ef; --tinta-2: #b9b9b3; --tinta-3: #85857f;
+    --vidro: rgba(255,255,255,.055); --borda: rgba(255,255,255,.13); --borda-luz: rgba(255,255,255,.32);
+    --sans: "Space Grotesk", ui-sans-serif, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--tinta); font: 17px/1.6 var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; }
+
+  .fundo { position: fixed; inset: -10%; z-index: -1; overflow: hidden; }
+  .fundo i { position: absolute; border-radius: 50%; filter: blur(60px);
+    background: radial-gradient(circle at 35% 35%, #fff 0%, #9a9a9a 35%, transparent 70%);
+    animation: deriva 60s ease-in-out infinite alternate; }
+  .fundo i:nth-child(1) { width: 50vmax; height: 50vmax; left: -10%; top: -18%; opacity: .3; }
+  .fundo i:nth-child(2) { width: 36vmax; height: 36vmax; right: -8%; top: 30%; opacity: .18; animation-duration: 80s; animation-direction: alternate-reverse; }
+  .fundo i:nth-child(3) { width: 16vmax; height: 16vmax; left: 55%; top: 6%; opacity: .24; filter: blur(30px); animation-duration: 50s; }
+  @keyframes deriva { to { transform: translate3d(6vw, 5vh, 0) scale(1.12); } }
+
+  .vidro { position: relative; background: var(--vidro); border: 1px solid var(--borda); border-radius: 20px;
+    -webkit-backdrop-filter: blur(22px) saturate(140%); backdrop-filter: blur(22px) saturate(140%);
+    box-shadow: 0 10px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.14), inset 0 -1px 0 rgba(0,0,0,.3); }
+  .vidro::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+    background: linear-gradient(135deg, var(--borda-luz), transparent 35%, transparent 70%, rgba(255,255,255,.12));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .vidro { background: rgba(22,22,22,.92); } }
+  @media (prefers-reduced-transparency: reduce) { .vidro { background: #141414; backdrop-filter: none; -webkit-backdrop-filter: none; } }
+
+  .envolve { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+  .marca { display: flex; align-items: center; gap: 10px; font-weight: 600; text-decoration: none; }
+  .logo { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; background: var(--tinta); color: var(--bg); font: 700 18px/1 var(--mono); }
+
+  .hero { padding: 72px 0 56px; }
+  .selo { display: inline-flex; gap: 8px; align-items: center; font: 500 13px var(--mono); color: var(--tinta-2);
+    border: 1px solid var(--borda); padding: 6px 12px; border-radius: 99px; }
+  .selo::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--tinta); }
+  h1 { font-size: clamp(42px, 8vw, 84px); line-height: 1; letter-spacing: -.045em; margin: 22px 0 18px; font-weight: 600; }
+  h1 span { color: var(--tinta-3); }
+  .lead { font-size: clamp(18px, 2.4vw, 22px); color: var(--tinta-2); max-width: 600px; margin: 0 0 32px; }
+  .botoes { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 14px; font-weight: 600; text-decoration: none;
+    border: 1px solid var(--borda); background: rgba(255,255,255,.06); transition: background .3s, transform .3s cubic-bezier(.16,1,.3,1); }
+  .btn:hover { background: rgba(255,255,255,.12); transform: translateY(-2px); }
+  .btn.primario { background: var(--tinta); color: var(--bg); border-color: var(--tinta); }
+  .btn[aria-disabled="true"] { cursor: default; }
+  .btn small { font: 500 12px var(--mono); opacity: .65; }
+
+  h2 { font-size: 28px; letter-spacing: -.02em; margin: 0 0 20px; font-weight: 600; }
+  section { padding: 40px 0; }
+  .passos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .passo { padding: 24px; }
+  .passo b { display: block; font: 500 13px var(--mono); color: var(--tinta-3); margin-bottom: 12px; }
+  .passo h3 { margin: 0 0 8px; font-size: 19px; font-weight: 600; letter-spacing: -.01em; }
+  .passo p { margin: 0; color: var(--tinta-2); font-size: 15px; }
+
+  .ofertas { padding: 28px; display: grid; gap: 16px; }
+  .ofertas .vazio { color: var(--tinta-2); margin: 0; }
+  .grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .oferta { border: 1px solid var(--borda); border-radius: 14px; padding: 12px; text-decoration: none; display: flex; flex-direction: column; gap: 8px; background: rgba(0,0,0,.25); }
+  .oferta img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 10px; background: #111; }
+  .oferta .t { font-size: 14px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .oferta .p { font: 500 18px var(--mono); }
+  .oferta .p s { color: var(--tinta-3); font-size: 13px; margin-right: 6px; }
+
+  footer { padding: 40px 0 56px; color: var(--tinta-3); font-size: 14px; border-top: 1px solid rgba(255,255,255,.08); margin-top: 24px; }
+  footer p { margin: 0 0 8px; max-width: 720px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sobe { animation: sobe .9s cubic-bezier(.16,1,.3,1) both; }
+    .sobe:nth-child(2) { animation-delay: .08s; } .sobe:nth-child(3) { animation-delay: .16s; } .sobe:nth-child(4) { animation-delay: .24s; }
+  }
+  @keyframes sobe { from { opacity: 0; transform: translateY(14px); } }
+  @media (prefers-reduced-motion: reduce) { .fundo i { animation: none; } }
+  @media (max-width: 760px) {
+    .envolve { padding: 0 16px; }
+    .hero { padding: 40px 0 32px; }
+    .passos { grid-template-columns: 1fr; }
+    .btn { width: 100%; justify-content: center; }
+    .ofertas { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="fundo" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<div class="envolve">
+  <header>
+    <a class="marca" href="./"><span class="logo">%</span>Achados do Dia</a>
+  </header>
+
+  <main>
+    <div class="hero">
+      <span class="selo sobe">Ofertas selecionadas todos os dias</span>
+      <h1 class="sobe">Só desconto<br><span>de verdade.</span></h1>
+      <p class="lead sobe">A gente acompanha o preço dos produtos e só divulga quando o desconto é real. Nada de "promoção" com preço inflado.</p>
+      <div class="botoes sobe">
+        <a class="btn primario" id="entrar" href="#" aria-disabled="true">Entrar no grupo <small>em breve</small></a>
+        <a class="btn" href="#ofertas">Ver ofertas de hoje</a>
+      </div>
+    </div>
+
+    <section>
+      <h2>Como funciona</h2>
+      <div class="passos">
+        <div class="passo vidro"><b>01</b><h3>Procuramos</h3><p>Ofertas de AliExpress, Shopee e Mercado Livre, várias vezes por dia.</p></div>
+        <div class="passo vidro"><b>02</b><h3>Conferimos</h3><p>Comparamos com o preço normal do produto e checamos avaliação e vendas.</p></div>
+        <div class="passo vidro"><b>03</b><h3>Avisamos</h3><p>Só o que vale a pena vai para o grupo, poucas vezes por dia.</p></div>
+      </div>
+    </section>
+
+    <section id="ofertas">
+      <h2>Ofertas de hoje</h2>
+      <div class="ofertas vidro" id="lista">
+        <p class="vazio">As primeiras ofertas aparecem aqui em breve.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><b>Publicidade.</b> Participamos de programas de afiliados (AliExpress, Shopee e Mercado Livre). Quando você compra por um link daqui, podemos receber uma comissão, sem nenhum custo extra para você.</p>
+    <p>Preços e estoque mudam a qualquer momento e são definidos pelas lojas. Confira sempre na página do produto antes de comprar.</p>
+  </footer>
+</div>
+
+<script>
+  // ofertas.json é publicado pelo coletor; enquanto não existir, fica a mensagem "em breve"
+  fetch("ofertas.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((d) => {
+    if (d && d.grupo) {
+      const b = document.getElementById("entrar");
+      b.href = d.grupo; b.removeAttribute("aria-disabled"); b.innerHTML = "Entrar no grupo";
+    }
+    if (!d || !Array.isArray(d.ofertas) || !d.ofertas.length) return;
+    const brl = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    document.getElementById("lista").innerHTML = `<div class="grade">${d.ofertas.map((o) => `
+      <a class="oferta" href="${esc(o.link)}" rel="sponsored noopener" target="_blank">
+        <img src="${esc(o.imagem)}" alt="" loading="lazy">
+        <span class="t">${esc(o.titulo)}</span>
+        <span class="p">${o.preco_original ? `<s>${brl(o.preco_original)}</s>` : ""}${brl(o.preco)}</span>
+      </a>`).join("")}</div>`;
+  }).catch(() => {});
+  document.getElementById("entrar").addEventListener("click", (e) => {
+    if (e.currentTarget.getAttribute("aria-disabled") === "true") e.preventDefault();
+  });
+</script>
+</body>
+</html>
