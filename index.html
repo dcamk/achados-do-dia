@@ -130,6 +130,41 @@
     .grade { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .lojas li { padding: 10px 14px; font-size: 15px; }
   }
+
+  /* fitas Black Friday cruzadas */
+  .fitas { position: relative; height: 170px; margin: 40px 0 0; overflow: hidden; }
+  .fita { position: absolute; left: -5%; width: 110%; padding: 12px 0; overflow: hidden; white-space: nowrap;
+    font: 700 22px/1 var(--sans); letter-spacing: .04em; text-transform: uppercase; color: #07060d; }
+  .fita.a { top: 30px; background: var(--lima); transform: rotate(-3deg); box-shadow: 0 0 34px rgba(182,255,59,.45); }
+  .fita.b { top: 92px; background: var(--rosa); transform: rotate(2.5deg); box-shadow: 0 0 34px rgba(255,45,149,.5); color: #fff; }
+  .fita span { display: inline-block; animation: corre 40s linear infinite; }
+  .fita.b span { animation-direction: reverse; }
+  .fita b { padding: 0 18px; }
+  .fita i { font-style: normal; opacity: .55; }
+
+  /* vitrine de categorias */
+  .vitrine { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .cat { position: relative; border-radius: 22px; overflow: hidden; min-height: 420px; display: flex; flex-direction: column; justify-content: flex-end;
+    border: 1px solid var(--borda); background: #000; text-decoration: none; isolation: isolate;
+    transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s, border-color .45s; }
+  .cat:hover { transform: translateY(-6px); border-color: var(--cor); box-shadow: 0 0 40px color-mix(in srgb, var(--cor) 45%, transparent); }
+  .cat .fotos { position: absolute; inset: 0; display: grid; grid-template-rows: 1.4fr 1fr; gap: 3px; z-index: -2; }
+  .cat .fotos img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(1.1) contrast(1.05); transition: transform .8s cubic-bezier(.16,1,.3,1); }
+  .cat:hover .fotos img { transform: scale(1.05); }
+  .cat::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, #07060d 8%, rgba(7,6,13,.75) 38%, transparent 70%); }
+  .cat .etiqueta-bf { position: absolute; top: 16px; right: 16px; transform: rotate(6deg); background: var(--cor); color: #07060d; font: 700 13px/1 var(--mono);
+    padding: 10px 12px; border-radius: 10px; text-transform: uppercase; letter-spacing: .06em; box-shadow: 0 0 22px var(--cor); }
+  .cat .texto { padding: 22px; }
+  .cat h3 { margin: 0 0 6px; font-size: 30px; letter-spacing: -.03em; line-height: 1; }
+  .cat h3 span { color: var(--cor); text-shadow: 0 0 18px color-mix(in srgb, var(--cor) 60%, transparent); }
+  .cat p { margin: 0; color: var(--tinta-2); font-size: 15px; }
+  .creditos { font-size: 12px !important; color: var(--tinta-3); }
+  .creditos a { color: var(--tinta-3); }
+  @media (prefers-reduced-motion: reduce) { .fita span { animation: none; } }
+  @media (max-width: 760px) {
+    .fitas { height: 130px; } .fita { font-size: 16px; padding: 10px 0; } .fita.a { top: 24px; } .fita.b { top: 70px; }
+    .vitrine { grid-template-columns: 1fr; } .cat { min-height: 340px; }
+  }
 </style>
 </head>
 <body>
@@ -138,7 +173,7 @@
 <div class="envolve">
   <header>
     <a class="marca" href="./"><span class="logo">%</span>Achados do Dia</a>
-    <nav><a href="#como">Como funciona</a><a href="#ofertas">Ofertas de hoje</a></nav>
+    <nav><a href="#destaques">Categorias</a><a href="#como">Como funciona</a><a href="#ofertas">Ofertas de hoje</a></nav>
   </header>
 
   <main>
@@ -161,6 +196,34 @@
       </ul>
     </div>
   </main>
+</div>
+
+<div class="fitas" aria-hidden="true">
+  <div class="fita a"><span><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i></span></div>
+  <div class="fita b"><span><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i><b>Black Friday</b><i>●</i><b>Ofertas todo dia</b><i>●</i><b>Desconto de verdade</b><i>●</i></span></div>
+</div>
+
+<div class="envolve">
+  <section id="destaques">
+    <h2>Categorias em destaque</h2>
+    <div class="vitrine">
+      <a class="cat" href="#ofertas" style="--cor: var(--rosa)">
+        <div class="fotos"><img src="fotos/moda-arara.jpg" alt="Arara com roupas femininas coloridas" loading="lazy"><img src="fotos/moda-look.jpg" alt="Look feminino com cardigã, jeans e botas" loading="lazy"></div>
+        <span class="etiqueta-bf">Moda</span>
+        <div class="texto"><h3>Moda <span>feminina</span></h3><p>Vestidos, blusas, calças e calçados com preço de liquidação.</p></div>
+      </a>
+      <a class="cat" href="#ofertas" style="--cor: var(--laranja)">
+        <div class="fotos"><img src="fotos/ferramentas-furadeira.jpg" alt="Furadeira sem fio vermelha" loading="lazy"><img src="fotos/ferramentas-kit.jpg" alt="Kit de ferramentas organizado" loading="lazy"></div>
+        <span class="etiqueta-bf">Ferramentas</span>
+        <div class="texto"><h3>Ferramentas <span>em oferta</span></h3><p>Furadeiras, kits e acessórios para casa e trabalho.</p></div>
+      </a>
+      <a class="cat" href="#ofertas" style="--cor: var(--lima)">
+        <div class="fotos"><img src="fotos/brinquedos-trem.jpg" alt="Trenzinho de madeira" loading="lazy"><img src="fotos/brinquedos-coloridos.jpg" alt="Brinquedos educativos coloridos" loading="lazy"></div>
+        <span class="etiqueta-bf">Brinquedos</span>
+        <div class="texto"><h3>Brinquedos <span>pra todas as idades</span></h3><p>Educativos, de montar e presentes que cabem no bolso.</p></div>
+      </a>
+    </div>
+  </section>
 </div>
 
 <div class="faixa" aria-label="Categorias">
@@ -188,6 +251,7 @@
     <p><b>Publicidade.</b> Participamos dos programas de afiliados da Shopee, do AliExpress e do Mercado Livre. Quando você compra por um link daqui, podemos receber uma comissão, sem nenhum custo extra para você.</p>
     <p>Preços e estoque mudam a qualquer momento e são definidos pelas lojas. Confira sempre na página do produto antes de comprar.</p>
     <p>Shopee, AliExpress e Mercado Livre são marcas de seus respectivos donos. Este site não é um canal oficial dessas lojas.</p>
+    <p class="creditos">Fotos ilustrativas das categorias: Marcus Loke, Heather Ford, Quilia, Eugen Str, Jerry Wang e Vanessa Bucceri, via <a href="https://unsplash.com" rel="noopener">Unsplash</a>.</p>
   </footer>
 </div>
 
