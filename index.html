@@ -127,7 +127,8 @@
     .btn { width: 100%; }
     .passos { grid-template-columns: 1fr; }
     .ofertas { padding: 18px; }
-    .grade { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .grade { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .oferta { min-width: 0; }
     .lojas li { padding: 10px 14px; font-size: 15px; }
   }
 
@@ -165,6 +166,41 @@
     .fitas { height: 130px; } .fita { font-size: 16px; padding: 10px 0; } .fita.a { top: 24px; } .fita.b { top: 70px; }
     .vitrine { grid-template-columns: 1fr; } .cat { min-height: 340px; }
   }
+
+  /* carrossel de ofertas reais (só aparece quando existe ofertas.json) */
+  .carrossel { margin: 56px 0 0; }
+  .carrossel[hidden] { display: none; }
+  .car-topo { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+  .car-topo h2 { margin: 0; }
+  .car-topo h2 span { color: var(--lima); text-shadow: 0 0 18px rgba(182,255,59,.5); }
+  .car-setas { display: flex; gap: 8px; }
+  .car-setas button { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--borda); background: rgba(255,255,255,.05); color: var(--tinta);
+    font-size: 20px; cursor: pointer; transition: background .3s, border-color .3s; }
+  .car-setas button:hover { background: rgba(255,255,255,.12); border-color: var(--rosa); }
+  .trilho { display: grid; grid-auto-flow: column; grid-auto-columns: 232px; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
+    scroll-behavior: smooth; padding: 6px 2px 18px; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .trilho::-webkit-scrollbar { display: none; }
+  .prod { scroll-snap-align: start; position: relative; display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; text-decoration: none;
+    background: #fff; color: #222; box-shadow: 0 0 0 1px rgba(255,255,255,.08); transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s; }
+  .prod:hover { transform: translateY(-5px); box-shadow: 0 0 0 2px var(--rosa), 0 0 32px rgba(255,45,149,.45); }
+  .prod .img { aspect-ratio: 1; background: #f4f4f4; overflow: hidden; }
+  .prod .img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .prod .off { position: absolute; top: 0; right: 10px; background: var(--amarelo); color: #e8401c; font: 700 14px/1.05 var(--sans); text-align: center;
+    padding: 6px 6px 9px; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%); }
+  .prod .off small { display: block; font-size: 11px; }
+  .prod .loja-tag { position: absolute; top: 10px; left: 10px; background: #fff; border-radius: 8px; padding: 4px 7px; display: flex; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+  .prod .loja-tag img { height: 16px; width: auto; display: block; }
+  .prod .loja-tag .ml-selo { width: 18px; height: 18px; font-size: 8px; }
+  .prod .info { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .prod .nome { font-size: 14px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.6em; }
+  .prod .linha { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+  .prod .preco { color: #ee4d2d; font: 700 19px/1 var(--sans); }
+  .prod .preco s { display: block; color: #999; font-size: 12px; font-weight: 500; margin-bottom: 3px; }
+  .prod .vendas { font-size: 12px; color: #757575; white-space: nowrap; }
+  .prod .ver { margin-top: auto; text-align: center; border: 1px solid #ee4d2d; color: #ee4d2d; border-radius: 8px; padding: 7px; font-weight: 600; font-size: 14px; }
+  .prod:hover .ver { background: #ee4d2d; color: #fff; }
+  .car-nota { font-size: 12px; color: var(--tinta-3); margin: 4px 0 0; }
+  @media (max-width: 760px) { .trilho { grid-auto-columns: 70%; } .car-setas { display: none; } }
 </style>
 </head>
 <body>
@@ -195,6 +231,15 @@
         <li class="ml"><span class="ml-selo" aria-hidden="true">ML</span>Mercado Livre</li>
       </ul>
     </div>
+
+    <section class="carrossel" id="carrossel" hidden aria-roledescription="carrossel" aria-label="Ofertas em alta">
+      <div class="car-topo">
+        <h2>Ofertas <span>em alta</span></h2>
+        <div class="car-setas"><button type="button" id="car-ant" aria-label="Anterior">‹</button><button type="button" id="car-prox" aria-label="Próxima">›</button></div>
+      </div>
+      <div class="trilho" id="trilho"></div>
+      <p class="car-nota" id="car-nota"></p>
+    </section>
   </main>
 </div>
 
@@ -262,6 +307,46 @@
   const html = nichos.map(([n, c]) => `<span style="--cor: var(${c})">${n}</span>`).join("");
   document.getElementById("faixa").innerHTML = html + html;
 
+
+  // ---------- carrossel ----------
+  const MARCA = {
+    shopee: '<img src="marcas/shopee.svg" alt="Shopee">',
+    aliexpress: '<img src="marcas/aliexpress.svg" alt="AliExpress" style="height:12px">',
+    mercadolivre: '<span class="ml-selo" title="Mercado Livre">ML</span>',
+  };
+  function montarCarrossel(d) {
+    const sec = document.getElementById("carrossel"), trilho = document.getElementById("trilho");
+    const brl = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const fmtVendas = (n) => n >= 1000 ? `${Math.floor(n / 1000)}mil+ vendas` : `${n} vendas`;
+    trilho.innerHTML = d.ofertas.map((o) => {
+      const pct = o.preco_original > o.preco ? Math.round((1 - o.preco / o.preco_original) * 100) : 0;
+      return `<a class="prod" href="${esc(o.link)}" rel="sponsored noopener" target="_blank">
+        <div class="img"><img src="${esc(o.imagem)}" alt="${esc(o.titulo)}" loading="lazy" referrerpolicy="no-referrer"></div>
+        ${pct ? `<span class="off">${pct}%<small>OFF</small></span>` : ""}
+        ${MARCA[o.loja] ? `<span class="loja-tag">${MARCA[o.loja]}</span>` : ""}
+        <div class="info"><span class="nome">${esc(o.titulo)}</span>
+          <div class="linha"><span class="preco">${pct ? `<s>${brl(o.preco_original)}</s>` : ""}${brl(o.preco)}</span>${o.vendas ? `<span class="vendas">${fmtVendas(o.vendas)}</span>` : ""}</div>
+          <span class="ver">Ver oferta</span></div></a>`;
+    }).join("");
+    if (d.atualizado) document.getElementById("car-nota").textContent = `Atualizado em ${new Date(d.atualizado).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}. Preços podem mudar a qualquer momento.`;
+    sec.hidden = false;
+
+    // passa sozinho devagar; pausa com mouse, foco ou toque; volta ao início no fim
+    const passo = () => (trilho.querySelector(".prod")?.offsetWidth || 232) + 16;
+    const andar = (dir) => {
+      const fim = trilho.scrollLeft + trilho.clientWidth >= trilho.scrollWidth - 4;
+      if (dir > 0 && fim) trilho.scrollTo({ left: 0 }); else trilho.scrollBy({ left: dir * passo() });
+    };
+    document.getElementById("car-ant").onclick = () => andar(-1);
+    document.getElementById("car-prox").onclick = () => andar(1);
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let pausado = false;
+    ["pointerenter", "focusin", "touchstart"].forEach((ev) => sec.addEventListener(ev, () => (pausado = true), { passive: true }));
+    ["pointerleave", "focusout"].forEach((ev) => sec.addEventListener(ev, () => (pausado = false)));
+    setInterval(() => { if (!pausado && !document.hidden) andar(1); }, 4000);
+  }
+
   // ofertas.json só existe se for publicado de propósito; sem ele fica a mensagem "em breve"
   fetch("ofertas.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((d) => {
     if (d && d.grupo) {
@@ -269,6 +354,7 @@
       b.href = d.grupo; b.removeAttribute("aria-disabled"); b.innerHTML = "Entrar no grupo";
     }
     if (!d || !Array.isArray(d.ofertas) || !d.ofertas.length) return;
+    montarCarrossel(d);
     const brl = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
     const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     document.getElementById("lista").innerHTML = `<div class="grade">${d.ofertas.map((o) => `
