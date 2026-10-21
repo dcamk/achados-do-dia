@@ -74,7 +74,12 @@
   .lojas li.ali img { height: 22px; }
   .lojas li.shopee { --brilho: rgba(238,77,45,.5); color: #ee4d2d; }
   .lojas li.ali { --brilho: rgba(255,71,71,.5); }
-  .lojas li.ml { --brilho: rgba(255,230,0,.45); background: var(--amarelo); color: #2d3277; }
+  .lojas li.ml { --brilho: rgba(255,230,0,.45); background: #ffe600; }
+  .lojas li.ml img { height: 30px; }
+  .lojas li.amazon { --brilho: rgba(255,153,0,.45); color: #131921; } .lojas li.amazon img { height: 24px; }
+  .lojas li.kabum { --brilho: rgba(255,102,0,.45); } .lojas li.kabum img { height: 26px; }
+  .lojas li.pichau { --brilho: rgba(230,30,40,.45); background: #e6141e; color: #fff; font-weight: 800; letter-spacing: -.01em; }
+  .lojas li.terabyte { --brilho: rgba(0,120,255,.4); background: #0b0b0b; color: #fff; font: 800 15px var(--mono); letter-spacing: .08em; border: 1px solid #333; }
   .ml-selo { width: 26px; height: 26px; border-radius: 50%; background: #2d3277; color: var(--amarelo); display: grid; place-items: center; font-size: 11px; font-weight: 700; }
 
   /* faixa de nichos */
@@ -264,7 +269,11 @@
       <ul>
         <li class="shopee"><img src="marcas/shopee.svg" alt="">Shopee</li>
         <li class="ali"><img src="marcas/aliexpress.svg" alt="AliExpress"></li>
-        <li class="ml"><span class="ml-selo" aria-hidden="true">ML</span>Mercado Livre</li>
+        <li class="ml"><img src="marcas/mercadolivre.webp" alt="Mercado Livre"></li>
+        <li class="amazon"><img src="marcas/amazon.svg" alt="">Amazon</li>
+        <li class="kabum"><img src="marcas/kabum.svg" alt="KaBuM!"></li>
+        <li class="pichau">Pichau</li>
+        <li class="terabyte">TERABYTE</li>
       </ul>
     </div>
 
@@ -335,9 +344,9 @@
   </section>
 
   <footer>
-    <p><b>Publicidade.</b> Participamos dos programas de afiliados da Shopee, do AliExpress e do Mercado Livre. Quando você compra por um link daqui, podemos receber uma comissão, sem nenhum custo extra para você.</p>
+    <p><b>Publicidade.</b> Participamos dos programas de afiliados das lojas acima (Shopee, AliExpress, Mercado Livre, Amazon, KaBuM!, Pichau e Terabyte). Quando você compra por um link daqui, podemos receber uma comissão, sem nenhum custo extra para você.</p>
     <p>Preços e estoque mudam a qualquer momento e são definidos pelas lojas. Confira sempre na página do produto antes de comprar.</p>
-    <p>Shopee, AliExpress e Mercado Livre são marcas de seus respectivos donos. Este site não é um canal oficial dessas lojas.</p>
+    <p>As marcas e logotipos das lojas pertencem aos seus donos. Este site não é um canal oficial dessas lojas.</p>
     <p class="creditos">Fotos ilustrativas das categorias: Marcus Loke, Heather Ford, Quilia, Eugen Str, Jerry Wang e Vanessa Bucceri, via <a href="https://unsplash.com" rel="noopener">Unsplash</a>.</p>
   </footer>
 </div>
@@ -354,7 +363,9 @@
   const MARCA = {
     shopee: '<img src="marcas/shopee.svg" alt="Shopee">',
     aliexpress: '<img src="marcas/aliexpress.svg" alt="AliExpress" style="height:12px">',
-    mercadolivre: '<span class="ml-selo" title="Mercado Livre">ML</span>',
+    mercadolivre: '<img src="marcas/mercadolivre.webp" alt="Mercado Livre" style="height:16px">',
+    amazon: '<img src="marcas/amazon.svg" alt="Amazon" style="height:14px">',
+    kabum: '<img src="marcas/kabum.svg" alt="KaBuM!" style="height:12px">',
   };
   function montarCarrossel(d) {
     const sec = document.getElementById("carrossel"), trilho = document.getElementById("trilho");
